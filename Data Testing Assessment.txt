@@ -1,0 +1,118 @@
+Data Testing Assessment:
+
+A school 'Study & Play' has different branches in India. Students appeared in 10th & 12th board have scored good marks in different subjects. 'Study & Play' wants to recognize teachers across different streams to award them for their student's performance. 
+'Student & Play' are looking for a data warehouse solution to do analysis on student performance in a particular branch or subject. 
+Exercise - 
+As a part of this exercise, use the below Student data to import in database table.
+Sample Data –
+
+Student Name	StudentRollNo	Class	Age	Father's Name
+AJAY KUMAR	IETLINF01	X	16	PREM KUMAR
+RAJAT MISHRA	IETLINF02	XI	17	PANKAJ MISHRA
+SUDHEER SHARMA	IETLINF03	IX	15	SUNDER SHARMA
+NANCY KAUR	IETLINF04	XII	18	AK SINGH
+SUMITA SHARMA	IETLINF05	IV	14	AJAY SHARMA
+NANDINI GUPTA	IETLINF06	VII	18	RAM GUPTA
+RAM KUMAR	IETLINF07	X	16	RAMAN KUMAR
+
+
+1.Create above table in database and insert the data.
+
+CREATE TABLE Student_database (
+    StudentName varchar(255),
+    StudentRollNo varchar(255),
+    Class varchar(255),
+    Age int,
+    FatherName varchar(255)
+);
+
+
+INSERT INTO Student_database(StudentName, StudentRollNo, Class, Age, FatherName)
+VALUES ('AJAY KUMAR', 'IETLINF01', 'X', 16, 'PREM KUMAR'),
+('RAJAT MISHRA'	,'IETLINF02','XI',17,'PANKAJ MISHRA'),
+('SUDHEER SHARMA','IETLINF03','IX',15,'SUNDER SHARMA'),
+('NANCY KAUR','IETLINF04','XII',18,'AK SINGH'),
+('SUMITA SHARMA','IETLINF05','IV',14,'AJAY SHARMA'),
+('NANDINI GUPTA','IETLINF06','VII',18,'RAM GUPTA'),
+('RAM KUMAR','IETLINF07','X',16,'RAMAN KUMAR');
+
+SELECT * from Student_database;
+
+StudentName	StudentRollNo	Class	Age	FatherName
+AJAY KUMAR	IETLINF01	X	16	PREM KUMAR
+RAJAT MISHRA	IETLINF02	XI	17	PANKAJ MISHRA
+SUDHEER SHARMA	IETLINF03	IX	15	SUNDER SHARMA
+NANCY KAUR	IETLINF04	XII	18	AK SINGH
+SUMITA SHARMA	IETLINF05	IV	14	AJAY SHARMA
+NANDINI GUPTA	IETLINF06	VII	18	RAM GUPTA
+RAM KUMAR	IETLINF07	X	16	RAMAN KUMAR
+AJAY KUMAR	IETLINF01	X	16	PREM KUMAR
+RAJAT MISHRA	IETLINF02	XI	17	PANKAJ MISHRA
+SUDHEER SHARMA	IETLINF03	IX	15	SUNDER SHARMA
+NANCY KAUR	IETLINF04	XII	18	AK SINGH
+SUMITA SHARMA	IETLINF05	IV	14	AJAY SHARMA
+NANDINI GUPTA	IETLINF06	VII	18	RAM GUPTA
+RAM KUMAR	IETLINF07	X	16	RAMAN KUMAR
+
+2.Write sql query to find out total number of students in each class.
+
+SELECT class, COUNT(*) as total_students
+FROM Student_database
+GROUP BY class;
+
+Class	total_students
+IV	2
+IX	2
+VII	2
+X	4
+XI	2
+XII	2
+
+3.Write sql query to find out average age of students in each class.
+
+SELECT class,avg(age) as Average_age 
+FROM Student_database 
+GROUP BY class;
+
+Class	Average_age
+IV	14
+IX	15
+VII	18
+X	16
+XI	17
+XII	18
+
+4.To find out the number of students having the same roll no., you can use the following SQL query:
+
+SELECT StudentRollNo, COUNT(*) as total_students
+FROM student_database
+GROUP BY StudentRollNo;
+
+StudentRollNo	total_students
+IETLINF01	2
+IETLINF02	2
+IETLINF03	2
+IETLINF04	2
+IETLINF05	2
+IETLINF06	2
+IETLINF07	2
+
+5.To view the duplicate name of a student from the table, you can use the following SQL query
+
+SELECT StudentName, COUNT(*) AS TotalDuplicates
+FROM student_database
+GROUP BY StudentName
+HAVING COUNT(*) > 1;
+
+StudentName	TotalDuplicates
+AJAY KUMAR	2
+NANCY KAUR	2
+NANDINI GUPTA	2
+RAJAT MISHRA	2
+RAM KUMAR	2
+SUDHEER SHARMA	2
+SUMITA SHARMA	2
+
+
+
+

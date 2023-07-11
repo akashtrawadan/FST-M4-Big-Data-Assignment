@@ -1,0 +1,66 @@
+1. Create a directory in HDFS called input
+
+>hadoop fs -mkdir input
+
+2.Load the file data_quality_input.csv into this directory
+
+>hadoop fs -put data_quality_input.csv/input
+
+3.Understand the given input data and create hive external table for this
+
+hive>CREATE EXTERNAL TABLE data_quality_input (
+  CustomerID INT,
+  name STRING,
+  gender STRING,
+  age INT,
+  email STRING,
+  Month_of_joining STRING,
+  Mobile_No INT
+)
+ROW FORMAT DELIMITED
+   FIELDS TERMINATED BY ' ';
+
+LOAD DATA INPATH '/user/hive/warehouse/data_quality_input' INTO TABLE data_quality_input;
+
+4. List down the distinct month names in the given input
+
+hive>SELECT DISTINCT month_of_joining FROM data_quality_input;
+
+5.Calculate the total number of Male and Female in this data
+
+hive>SELECT gender, COUNT(*) FROM data_quality_input GROUP BY gender;
+
+6.Write down the role of these services in these above processes
+a. HADOOP – NameNode: It is responsible for managing metadata information about HDFS.
+b. HADOOP – DataNodes: It stores actual data in HDFS.
+c. HADOOP – Secondary NameNode: It is responsible for creating checkpoints of the namespace information.
+d. HADOOP – Resource Manager: It is responsible for managing resources in a cluster.
+e. HADOOP – Node Manager: It is responsible for managing resources on a single node.
+
+7. Take the records only the age between 30 and 50 and store it in HDFS
+
+hive>INSERT OVERWRITE DIRECTORY '/user/hive/warehouse/data_quality_output' SELECT * FROM data_quality_input WHERE age BETWEEN 30 AND 50;
+
+8. Create the Database and table for the above results
+
+hive>CREATE DATABASE IF NOT EXISTS data_quality;
+USE data_quality;
+
+hive>CREATE TABLE data_quality_output (
+  CustomerID INT,
+  name STRING,
+  gender STRING,
+  age INT,
+  email STRING,
+  Month_of_joining STRING,
+  Mobile_No INT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+LOCATION '/user/hive/warehouse/data_quality_output';
+
+9. Do the data export to transfer the data from HDFS to MySQL table
+
+sqoop export --connect jdbc:mysql://localhost/db --username root --password root --table data_quality_output --export-dir /user/hive/warehouse/data_quality_output --input-fields-terminated-by ',';
+
+
+
